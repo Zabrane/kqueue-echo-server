@@ -1,2 +1,2 @@
 all:
-	clang kqueue_echo_server_tcp.c -o kqueue_echo_server_tcp
+	clang kqueue_echo_server_tcp.c -O3 -flto -o kqueue_echo_server_tcp
