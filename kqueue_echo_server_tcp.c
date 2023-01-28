@@ -6,19 +6,22 @@
 #include <string.h>
 #include <unistd.h>
 
- #include <execinfo.h>
+#include <execinfo.h>
+
+#define EVENTS 1024
+#define BUFSZ 8192*8
 
 int main()
 {
     // All needed variables.
     int socket_listen_fd,
-        portno = 1815,
+        portno = 2222,
         client_len,
         socket_connection_fd,
         kq,
         new_events;
-    struct kevent change_event[32],
-        event[32];
+    struct kevent change_event[EVENTS],
+        event[EVENTS];
     struct sockaddr_in serv_addr,
         client_addr;
 
@@ -125,9 +128,8 @@ int main()
             {
                 occurred_events++;
                 // Read bytes from socket
-                int maxlen = 1000;
-                char buf[maxlen];
-                size_t bytes_read = recv(event_fd, buf, maxlen, 0);
+                char buf[BUFSZ];
+                size_t bytes_read = recv(event_fd, buf, BUFSZ, 0);
                 send(event_fd, buf, bytes_read, 0);
             }
         }
